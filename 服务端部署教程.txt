@@ -1,0 +1,36 @@
+校园服务微信小程序服务端部署教程
+
+需自备服务器和备案过的域名，推荐2核4G服务器，最低配置要求1核2G，没有服务器，推荐去华为云购买，从我这边购买华为云服务器，赠送200元华为云代金券，此外可提供技术支持一直到小程序上线运营。
+
+1.安装宝塔面板。脚本: yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && bash install.sh
+
+
+
+2.安装环境。完成宝塔面板安装后下载安装以下软件：nginx、mysql、pm2管理器（自带nodejs）
+
+3.上传服务端。在文件管理内新建目录，给目录取个名字 如“demo”，上传项目服务端压缩包，并解压。
+
+4.安装依赖。脚本：npm install (下载时间可能比较长，建议使用淘宝的npm镜像 脚本：npm install -g cnpm --registry=https://registry.npm.taobao.org）
+
+5.创建数据库。注意数据库编码utf8mb4，导入数据库文件help.sql
+
+6.修改数据库配置。打开/pub/config/config.js 修改数据库配置 MYSQL: {
+    host: "localhost",
+    user: "myname",
+    password: "password", //数据库密码
+    port: "3306",
+    database: "myname", //数据库名
+    timezone: "+08:00",
+    dateStrings: true
+  },
+
+7.修改小程序配置。打开/pub/config/config.js 修改小程序配置 APP_ID: "自行填写", //微信小程序APPID
+  APP_SECRET: "自行填写", //微信小程序APP密钥
+  Mch_id: "自行填写", //商户号
+  Mch_key: "自行填写", //商户密钥 （商户号没有可先不填）
+
+8.启动项目。打开PM2管理器，添加新项目，选择项目所在的路径，启动文件为bin/www,项目名称可随意起名。然后启动项目。
+
+9.域名反向代理。点击pm2管理器里的映射按钮，将项目映射到自己的域名。此后就可以用域名访问到项目。
+
+10.访问服务器项目地址：http://xxx.xxx.com 若出现extends layout block content h1= title p Welcome to #(title）即代表服务端部署成功。
